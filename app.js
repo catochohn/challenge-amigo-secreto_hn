@@ -65,3 +65,16 @@ function sortearAmigo() {
     // Limpiar la lista de amigos para poder jugar de nuevo
     limpiarLista();
 }
+
+// Función para limpiar la lista de amigos después del sorteo
+function limpiarLista() {
+    // Vaciar el array de amigos
+    amigos = [];
+    
+    // Actualizar la lista visual para que aparezca vacía
+    actualizarListaAmigos();
+    
+    // Limpiar también el campo de entrada por si acaso
+    const inputAmigo = document.getElementById('amigo');
+    inputAmigo.value = '';
+}
