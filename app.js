@@ -78,3 +78,14 @@ function limpiarLista() {
     const inputAmigo = document.getElementById('amigo');
     inputAmigo.value = '';
 }
+
+// Función adicional para permitir agregar nombres con la tecla Enter
+document.addEventListener('DOMContentLoaded', function() {
+    const inputAmigo = document.getElementById('amigo');
+    
+    inputAmigo.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            agregarAmigo();
+        }
+    });
+});
