@@ -160,3 +160,30 @@ ul {
 .button-draw:hover {
     background-color: var(--color-button-hover);
 }
+
+/* ============================= */
+/* Mensajes de validación        */
+/* ============================= */
+.mensaje {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    margin-top: 8px;
+    min-height: 18px; /* mantiene espacio aunque esté vacío */
+    text-align: center;
+    opacity: 0;        /* oculto por defecto */
+    transition: opacity 0.5s ease-in-out;
+}
+
+.mensaje.visible {
+    opacity: 1;        /* aparece con fade-in */
+}
+
+.mensaje.error {
+    color: #e63946;    /* rojo elegante */
+    font-weight: 600;
+}
+
+.mensaje.exito {
+    color: #2a9d8f;    /* verde suave */
+    font-weight: 600;
+}
