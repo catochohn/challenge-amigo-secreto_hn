@@ -1,89 +1,116 @@
-// El principal objetivo de este desafío es fortalecer tus habilidades en lógica de programación. Aquí deberás desarrollar la lógica para resolver el problema.
-
-// Array para almacenar los nombres de los amigos
 let amigos = [];
 
-// Función para agregar un amigo a la lista
+// ===============================
+// Función para mostrar mensajes
+// ===============================
+function mostrarMensaje(texto, tipo = "error") {
+    const mensaje = document.getElementById('mensaje');
+    mensaje.textContent = texto;
+
+    // Resetear clases
+    mensaje.className = "mensaje";
+
+    if (tipo === "error") {
+        mensaje.classList.add("error");
+    } else if (tipo === "exito") {
+        mensaje.classList.add("exito");
+    }
+
+    // Mostrar mensaje con fade-in
+    mensaje.classList.add("visible");
+
+    // Ocultar automáticamente después de 3 segundos
+    setTimeout(() => {
+        mensaje.classList.remove("visible");
+        // limpiar texto al finalizar fade-out
+        setTimeout(() => {
+            mensaje.textContent = "";
+        }, 500);
+    }, 3000);
+}
+
+// ===============================
+// Agregar un amigo a la lista
+// ===============================
 function agregarAmigo() {
-    // Capturar el valor del campo de entrada
     const inputAmigo = document.getElementById('amigo');
     const nombreAmigo = inputAmigo.value.trim();
-    
-    // Validar la entrada
+
+    // Validar entrada vacía
     if (nombreAmigo === '') {
-        alert('Por favor, inserte un nombre.');
+        mostrarMensaje("⚠️ Por favor, inserte un nombre.", "error");
         return;
     }
-    
-    // Limpiar el mensaje del resultado anterior al agregar un nuevo jugador
-    const resultado = document.getElementById('resultado');
-    resultado.innerHTML = '';
-    
-    // Actualizar el array de amigos
+
+    // Normalizar para evitar duplicados
+    const nombreNormalizado = nombreAmigo.toLowerCase();
+    const existe = amigos.some(amigo => amigo.toLowerCase() === nombreNormalizado);
+
+    if (existe) {
+        mostrarMensaje(`⚠️ El nombre "${nombreAmigo}" ya está en la lista.`, "error");
+        inputAmigo.value = '';
+        return;
+    }
+
+    // Agregar amigo
     amigos.push(nombreAmigo);
-    
-    // Limpiar el campo de entrada
-    inputAmigo.value = '';
-    
-    // Actualizar la lista visual
     actualizarListaAmigos();
+
+    // Mostrar mensaje de éxito
+    mostrarMensaje(`✅ Se agregó "${nombreAmigo}" a la lista.`, "exito");
+
+    // Limpiar input
+    inputAmigo.value = '';
+    document.getElementById('resultado').innerHTML = '';
 }
 
-// Función para actualizar la lista visual de amigos
+// ===============================
+// Actualizar lista visual
+// ===============================
 function actualizarListaAmigos() {
-    // Obtener el elemento de la lista
     const listaAmigos = document.getElementById('listaAmigos');
-    
-    // Limpiar la lista existente
     listaAmigos.innerHTML = '';
-    
-    // Iterar sobre el arreglo y crear elementos de lista
-    for (let i = 0; i < amigos.length; i++) {
+
+    amigos.forEach(amigo => {
         const listItem = document.createElement('li');
-        listItem.textContent = amigos[i];
+        listItem.textContent = amigo;
         listaAmigos.appendChild(listItem);
-    }
+    });
 }
 
-// Función para sortear un amigo secreto aleatoriamente
+// ===============================
+// Sortear amigo
+// ===============================
 function sortearAmigo() {
-    // Validar que haya amigos disponibles
     if (amigos.length === 0) {
-        alert('No hay amigos en la lista. Por favor, agregue al menos un nombre.');
+        mostrarMensaje("⚠️ No hay amigos en la lista.", "error");
         return;
     }
-    
-    // Generar un índice aleatorio
+
     const indiceAleatorio = Math.floor(Math.random() * amigos.length);
-    
-    // Obtener el nombre sorteado
     const amigoSorteado = amigos[indiceAleatorio];
-    
-    // Mostrar el resultado
+
     const resultado = document.getElementById('resultado');
     resultado.innerHTML = `<li>🎉 El amigo secreto sorteado es: <strong>${amigoSorteado}</strong> 🎉</li>`;
-    
-    // Limpiar la lista de amigos para poder jugar de nuevo
+
+    mostrarMensaje("", ""); // limpiar cualquier mensaje previo
     limpiarLista();
 }
 
-// Función para limpiar la lista de amigos después del sorteo
+// ===============================
+// Limpiar lista
+// ===============================
 function limpiarLista() {
-    // Vaciar el array de amigos
     amigos = [];
-    
-    // Actualizar la lista visual para que aparezca vacía
     actualizarListaAmigos();
-    
-    // Limpiar también el campo de entrada por si acaso
-    const inputAmigo = document.getElementById('amigo');
-    inputAmigo.value = '';
+    document.getElementById('amigo').value = '';
 }
 
-// Función adicional para permitir agregar nombres con la tecla Enter
+// ===============================
+// Permitir agregar con Enter
+// ===============================
 document.addEventListener('DOMContentLoaded', function() {
     const inputAmigo = document.getElementById('amigo');
-    
     inputAmigo.addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             agregarAmigo();
